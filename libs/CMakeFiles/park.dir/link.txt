@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared -Wl,-soname,libpark.so -o libpark.so CMakeFiles/park.dir/park.cpp.o 
