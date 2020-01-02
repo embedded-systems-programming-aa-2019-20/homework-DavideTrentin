@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/main.dir/main.cpp.o  -o main -Wl,-rpath,/home/davide/prog-embedded-2019-2020/homework/homework/libs ../libs/libcar.so ../libs/libpark.so -lpthread 
