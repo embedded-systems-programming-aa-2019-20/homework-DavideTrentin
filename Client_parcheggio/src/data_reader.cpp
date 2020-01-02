@@ -21,10 +21,17 @@ using std::stoi;
 
 #include "client.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-  const char* PORT{"3500"};
+
   const char* IP{"localhost"};
+
+  if (argc != 2) {
+      cerr << "eseguire con: ./main PORT\n";
+      exit(EXIT_FAILURE);
+  }
+  const char* PORT{argv[1]};
+
   Client Connection{IP,PORT};
   bool status = Connection.client_open_conn();
   while(status){

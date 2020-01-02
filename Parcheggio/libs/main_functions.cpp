@@ -46,7 +46,12 @@ using std::multimap;
 #include "main_global_var.h"
 //FUNZIONI THREAD=============================================================================================================
 
-void th_file_reader(string file_name, int index) //indice 0 1 2 3
+// Funzione per la thread di lettura in input ci sono name file e indice della thread
+// ogni thread elabora la stringa che legge definendo l'oggetto macchina associato
+// e inserendolo in un oggetto Sorter che serve a definire su qualche percheggio agisce
+// e se entra/esce. Il Sorter viene aggiunto alla MULTIMAP un contenitore ordinato
+// rispetto alla variabile chiave "date_time" cioè data dell'esecuzione
+void th_file_reader(string file_name, int index) //indice 0 1 2 3 4
 {
 
   string line{"0"};
@@ -64,6 +69,8 @@ void th_file_reader(string file_name, int index) //indice 0 1 2 3
           case 2: next_map.insert(std::make_pair(c.date_time(), Sorter {c,1,true}));
                   break;
           case 3: next_map.insert(std::make_pair(c.date_time(), Sorter {c,1,false}));
+                  break;
+          case 4: next_map.insert(std::make_pair(c.date_time(), Sorter {c,1}));
                   break;
         }
         cout<<"aggiunta: "<<c<<endl;
@@ -83,6 +90,7 @@ void th_file_reader(string file_name, int index) //indice 0 1 2 3
 
 }
 
+/*
 void th_res_reader(string file_name) //indice 4
 {
   int index = 4;
@@ -108,9 +116,19 @@ void th_res_reader(string file_name) //indice 4
     cerr << "ERRORE lettura file: "<<file_name<<endl;
     exit(EXIT_FAILURE);
   }
-}
+}*/
 
-
+// Funzione per la thread di esecuzione delle azioni.
+// il ciclo continua finchè non è richiesto lo stop dal client e se ci sono
+// ancora dati da eseguire. La condizione del blocco sul wait è dato dalla fine
+// della lettura dei file in ingresso. Successivamente vengono elavorati ad uno
+// ad uno gli elementi nella multimap dividendo i casi di Prenotazioni e Uscite/Entrate
+// PRENOTAZIONI: inserisco nella map la prenotazione nel parcheggio più libero al
+// momento della prenotazione.
+// ENTRATE: viene eseguita l'entrata nel parcheggio indicato dall'oggetto Sorter.
+// USCITE: viene eseguita l'uscita nel parcheggio  indicato dall'oggetto Sorter e
+// viene segnalato alla relativa thread di calcolo dei profitti che c'è un nuovo dato
+// pronto per essere calcolato
 void th_executer()// indice 8
 {
   int index = 8;
@@ -166,6 +184,8 @@ void th_executer()// indice 8
   rw_lock.unlock();
   std::this_thread::sleep_for(std::chrono::milliseconds(100));
   rw_lock.lock();
+  if(next_map.size()==0)
+    stop = true;
   }
 
   cerr<<"DONE: "<<index<<endl;
@@ -175,6 +195,10 @@ void th_executer()// indice 8
   car_went_out[1].notify_one();
 }
 
+// Funzione per la thread di calcolo dei profitti.
+// input il numero del parcheggio (1 o 2). La condizione del wait aspetta di ricevere
+// nuovo dati da calcolare (derivanti dall'uscita di una macchina). Richiama la
+// funzione calcolo dei profitti del parcheggio.
 void th_profit_calc(int parkid) //indice 5 6
 {
   unique_lock<mutex> rw_lock(rw_mutex);
@@ -204,6 +228,9 @@ void th_profit_calc(int parkid) //indice 5 6
   }
 }
 
+// Funzione per la thread di comunicazione
+// Dopo essere stata creata aspetta di ricevere le richieste ed invia la risposta
+// seguita da un "DONE****" che rappresenta la fine della comunicazione
 void th_socket(int com_sock)//indice 10
 {
 
@@ -241,7 +268,8 @@ void th_socket(int com_sock)//indice 10
   cerr<<"DONE SENDING DATA"<<endl;
 }
 
-
+// Funzione loop accettazione comunicazione
+// crea il canale di comunicazione in una thread separata.
 void th_socket_accepter() //indice 9
 {
   serv.make_accept_sock(PORT);

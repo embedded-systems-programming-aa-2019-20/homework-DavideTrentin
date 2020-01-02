@@ -44,27 +44,31 @@ using std::multimap;
 #include "main_global_var.h"
 //VARIABILI GLOBALI========================================================================================================
  mutex rw_mutex;
- condition_variable done_reading;
  condition_variable car_went_out[2];
- condition_variable res_inserted;
 
  bool done[11]{false}; //segnalatore end thread
 
  multimap<Data,Sorter> next_map;
  condition_variable map_filled;
- list<Sorter> res_to_insert;
 
  Park p1("PARK1", 500, 1, 0.5);
  Park p2("PARK2", 500, 1, 0.5);
 
- const char* PORT = "3500";
+ char* PORT;
  const int MAXDATASIZE = 100;
  bool stop = false;
- Server serv{PORT};
+ Server serv;
 
 
 //MAIN======================================================================================================================
-int main() {
+int main(int argc, char* argv[])
+{
+  if (argc != 2) {
+      cerr << "eseguire con: ./main PORT\n";
+      exit(EXIT_FAILURE);
+  }
+  PORT = argv[1];
+  serv.mod_port(PORT);
 
 vector<thread> threads;
 
@@ -73,7 +77,7 @@ threads.push_back(thread{th_file_reader,"parcheggioUnoUscita.txt", 1});
 threads.push_back(thread{th_file_reader,"parcheggioDueIngresso.txt", 2});
 threads.push_back(thread{th_file_reader,"parcheggioDueUscita.txt", 3});
 
-threads.push_back(thread{th_res_reader,"prenotazioni.txt"}); //4
+threads.push_back(thread{th_file_reader,"prenotazioni.txt",4}); //4
 
 threads.push_back(thread{th_profit_calc,0});//5
 threads.push_back(thread{th_profit_calc,1});//6

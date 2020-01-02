@@ -19,6 +19,7 @@ using std::string;
 class Server{
 public:
   Server(const char* PORT);
+  Server();
   void server_start();
   void server_send (int com_sock, string to_send);
   string server_receive(int com_sock);
@@ -26,6 +27,7 @@ public:
   void server_close_accept();
   void make_accept_sock (const char* PORT);
 
+  void mod_port(const char* PORT){PORT_ = PORT;}
   int accept_sock()const {return accept_sock_;}
 
 private:

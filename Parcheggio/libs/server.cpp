@@ -114,6 +114,9 @@ void *get_in_addr(struct sockaddr *sa)
 Server::Server(const char* PORT)
 :PORT_{PORT}, accept_sock_{-1} {}
 
+Server::Server()
+:PORT_{0000}, accept_sock_{-1} {}
+
 
 
 void Server::server_send(int com_sock, string to_send)

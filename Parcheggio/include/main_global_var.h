@@ -20,20 +20,17 @@ using std::map;
 using std::multimap;
 
 extern mutex rw_mutex;
-extern condition_variable done_reading;
 extern condition_variable car_went_out[2];
-extern condition_variable res_inserted;
 
 extern bool done[11]; //segnalatore end thread
 
 extern multimap<Data,Sorter> next_map;
 extern condition_variable map_filled;
-extern list<Sorter> res_to_insert;
 
 extern Park p1;
 extern Park p2;
 
-extern const char* PORT;
+extern char* PORT;
 extern const int MAXDATASIZE;
 extern bool stop;
 extern Server serv;

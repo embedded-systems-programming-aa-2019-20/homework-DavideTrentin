@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared -Wl,-soname,libclientlib.so -o libclientlib.so CMakeFiles/clientlib.dir/client.cpp.o 

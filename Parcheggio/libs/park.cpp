@@ -83,7 +83,7 @@ string Park::park_status()
 {
   std::list<Car>::iterator it;
   string out = "Posti occupati in " + park_name()+ " : " + to_string(occ_)
-                + "Ricavi: " + to_string(profit_) + " auto presenti: \n";
+                + " Ricavi: " + to_string(profit_) + " auto presenti: \n";
   for(it = buffer_.begin(); it != buffer_.end(); ++it){
     if((*it).has_reservation())
       out = out + (*it).plate() +" "+ (*it).res_enter_time().data_to_string() +"\n";
@@ -128,6 +128,7 @@ void Park::calc_profit()
   }
 }
 
+/*
 void Park::add_reservation(const Car& c)
 {
   unique_lock<std::mutex> mlock(mutex_);
@@ -152,3 +153,4 @@ Car Park::res_next_exit()
   res_exit_.erase(res_exit_.begin());
   return c;
 }
+*/
