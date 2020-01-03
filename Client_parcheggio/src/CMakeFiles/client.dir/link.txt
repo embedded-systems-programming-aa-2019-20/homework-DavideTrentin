@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/client.dir/data_reader.cpp.o  -o client -Wl,-rpath,/home/davide/prog-embedded-2019-2020/homework/homework/homework-DavideTrentin/Client_parcheggio/libs ../libs/libclientlib.so 

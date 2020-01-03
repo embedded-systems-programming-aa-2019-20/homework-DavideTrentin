@@ -23,13 +23,6 @@ public:
     //Funzione per thread calcolo profitti
     void calc_profit();
 
-    //FUNZIONI PER LA GESTIONE DELLE PRENOTAZIONI
-    //void add_reservation(const Car& c);
-    // Car res_next_enter();
-    // Car res_next_exit();
-    // std::size_t res_enter_size(){return res_enter_.size();}
-    // std::size_t res_exit_size(){return res_exit_.size();}
-
     int CAP() const {return CAP_;}
     int occ() const {return occ_;}
     float profit() const {return profit_;}
@@ -53,10 +46,6 @@ private:
     std::list<Car> exits_wto_elaborate_;
     int cars_wto_elaborate_;
 
-
-//VARIABILI PER LA PRENOTAZIONE
-    //std::multimap<Data,Car> res_enter_;
-    //std::multimap<Data,Car> res_exit_;
 };
 
 #endif

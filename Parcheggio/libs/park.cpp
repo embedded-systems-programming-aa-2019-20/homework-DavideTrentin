@@ -127,30 +127,3 @@ void Park::calc_profit()
   }
   }
 }
-
-/*
-void Park::add_reservation(const Car& c)
-{
-  unique_lock<std::mutex> mlock(mutex_);
-  if(c.has_reservation()){
-    res_enter_.insert(std::make_pair(c.res_enter_time(), c));
-    res_exit_.insert(std::make_pair(c.res_exit_time(), c));
-  }
-}
-
-Car Park::res_next_enter()
-{
-  unique_lock<std::mutex> mlock(mutex_);
-  Car c = (*(res_enter_.begin())).second;
-  res_enter_.erase(res_enter_.begin());
-  return c;
-}
-
-Car Park::res_next_exit()
-{
-  unique_lock<std::mutex> mlock(mutex_);
-  Car c = (*(res_exit_.begin())).second;
-  res_exit_.erase(res_exit_.begin());
-  return c;
-}
-*/

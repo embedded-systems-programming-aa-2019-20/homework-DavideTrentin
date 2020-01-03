@@ -45,6 +45,7 @@ using std::multimap;
 //VARIABILI GLOBALI========================================================================================================
  mutex rw_mutex;
  condition_variable car_went_out[2];
+ int last = 0;
 
  bool done[11]{false}; //segnalatore end thread
 

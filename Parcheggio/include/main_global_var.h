@@ -21,6 +21,7 @@ using std::multimap;
 
 extern mutex rw_mutex;
 extern condition_variable car_went_out[2];
+extern int last;
 
 extern bool done[11]; //segnalatore end thread
 

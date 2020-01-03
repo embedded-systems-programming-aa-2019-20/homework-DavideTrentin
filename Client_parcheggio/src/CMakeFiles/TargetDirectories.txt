@@ -1,3 +1,0 @@
-/home/davide/prog-embedded-2019-2020/homework/homework/homework-DavideTrentin/Client_parcheggio/src/CMakeFiles/rebuild_cache.dir
-/home/davide/prog-embedded-2019-2020/homework/homework/homework-DavideTrentin/Client_parcheggio/src/CMakeFiles/client.dir
-/home/davide/prog-embedded-2019-2020/homework/homework/homework-DavideTrentin/Client_parcheggio/src/CMakeFiles/edit_cache.dir

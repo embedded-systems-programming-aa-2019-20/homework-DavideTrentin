@@ -46,14 +46,13 @@ using std::multimap;
 #include "main_global_var.h"
 //FUNZIONI THREAD=============================================================================================================
 
-// Funzione per la thread di lettura in input ci sono name file e indice della thread
-// ogni thread elabora la stringa che legge definendo l'oggetto macchina associato
-// e inserendolo in un oggetto Sorter che serve a definire su qualche percheggio agisce
+// Funzione per la thread di lettura in input ci sono name file e indice della thread.
+// Ogni thread elabora la stringa che legge definendo l'oggetto Car associato
+// e inserendolo in un oggetto Sorter che serve a definire su quale percheggio agisce
 // e se entra/esce. Il Sorter viene aggiunto alla MULTIMAP un contenitore ordinato
-// rispetto alla variabile chiave "date_time" cioè data dell'esecuzione
+// rispetto alla variabile chiave "car.date_time()" cioè data dell'esecuzione dell'azione
 void th_file_reader(string file_name, int index) //indice 0 1 2 3 4
 {
-
   string line{"0"};
   ifstream myfile (file_name);
   if (myfile.is_open())
@@ -80,8 +79,11 @@ void th_file_reader(string file_name, int index) //indice 0 1 2 3 4
       unique_lock<mutex> rw_lock(rw_mutex);
       cerr<<"DONE: "<<index<<endl;
       done[index] = true;
+      ++last;
+      if(last == 5){
       rw_lock.unlock();
       map_filled.notify_one();
+      }
     }
   else {
     cerr << "ERRORE lettura file: "<<file_name<<endl;
@@ -120,7 +122,7 @@ void th_res_reader(string file_name) //indice 4
 
 // Funzione per la thread di esecuzione delle azioni.
 // il ciclo continua finchè non è richiesto lo stop dal client e se ci sono
-// ancora dati da eseguire. La condizione del blocco sul wait è dato dalla fine
+// ancora dati da eseguire. La condizione di blocco sul wait è data dalla fine
 // della lettura dei file in ingresso. Successivamente vengono elavorati ad uno
 // ad uno gli elementi nella multimap dividendo i casi di Prenotazioni e Uscite/Entrate
 // PRENOTAZIONI: inserisco nella map la prenotazione nel parcheggio più libero al
