@@ -2,6 +2,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_executable(main main.cpp ../libs/car.cpp ../libs/sorter.cpp)
+add_definitions(-Wall -Wextra)
 
 target_link_libraries(main PRIVATE carlib)
 target_link_libraries(main PRIVATE parklib)
