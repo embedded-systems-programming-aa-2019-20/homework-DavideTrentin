@@ -60,6 +60,7 @@ using std::multimap;
  bool stop = false;
  Server serv;
 
+ int delay = 100;
 
 //MAIN======================================================================================================================
 int main(int argc, char* argv[])

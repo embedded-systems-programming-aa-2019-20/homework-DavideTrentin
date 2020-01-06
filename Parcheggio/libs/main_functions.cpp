@@ -184,7 +184,7 @@ void th_executer()// indice 8
       }
     }
   rw_lock.unlock();
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  std::this_thread::sleep_for(std::chrono::milliseconds(delay));
   rw_lock.lock();
   if(next_map.size()==0)
     stop = true;

@@ -36,4 +36,6 @@ extern const int MAXDATASIZE;
 extern bool stop;
 extern Server serv;
 
+extern int delay;
+
 #endif

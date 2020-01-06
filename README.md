@@ -13,13 +13,16 @@ PER IL CORRETTO FUNZIONAMENTO
 
   Errori conosciuti:
 
-  Nel caso di terminazione forzata del programma da terminale
-  un nuovo avvio del programma non può essere fatto sulla stessa PORT senza riavviare
-  il terminale.
+ 1. Nel caso di terminazione forzata del programma da terminale
+    un nuovo avvio del programma non può essere fatto sulla stessa PORT senza riavviare
+    il terminale.
+    ERR: "server: failed to bind"
 
-  Il Client riesce a connettersi ad una PORT errata nel caso di input PORT inserite
-  in precedenza e che hanno portato ad una terminazione forzata da terminale.
+ 2. Il Client riesce a connettersi ad una PORT errata nel caso di input PORT inserite
+    in precedenza e che hanno portato ad una terminazione forzata da terminale.
 
+ 3. Il Programma parcheggio necessita di una richiesta di connessione dal client per riuscire 
+    a terminare in modo corretto. La thread di connessione rimane bloccata nella fase di accept().
 
 COMPILAZIONE
 
