@@ -21,7 +21,7 @@ using std::find;
 
 //COSTRUTTORI=============================================================================================
 Park::Park(string park_name, int cap, float hourly_rate, float dayly_rate)
-: CAP_(cap),park_name_(park_name),profit_(0), hourly_rate_(hourly_rate), dayly_rate_(dayly_rate),
+: CAP_(cap),park_name_(park_name),profit_(0), old_profit_(0), b_calculated_(false), hourly_rate_(hourly_rate), dayly_rate_(dayly_rate),
 cars_wto_elaborate_(0){
 cout << "parcheggio: "<< park_name_ << " posti disponibili: "<< to_string(CAP_)<< endl;
 }
@@ -67,16 +67,33 @@ void Park::car_exits(const Car& c)
     enters_wto_elaborate_.push_back((*it));
     exits_wto_elaborate_.push_back(c);
     ++cars_wto_elaborate_;
-    cout << c.date_time() << " " << (*it).plate() << " EXITS " << park_name()<< endl;
+  }
+  else{
+    enters_wto_elaborate_.push_back(Car{"0"});
+    exits_wto_elaborate_.push_back(Car{"0"});
+    ++cars_wto_elaborate_;
+  }
+}
+
+void Park::car_exits_output(const Car& c)
+{
+  std::list<Car>::iterator it;
+  unique_lock<std::mutex> mlock(mutex_);
+  it = find(buffer_.begin(), buffer_.end(), c);
+  cout<< "found "<< (*it)<<endl;
+  while(!b_calculated_)
+    calculated_.wait(mlock);
+
+  if((*it).valid()){
+    cout << c.date_time() << " " << (*it).plate() << " EXITS " << park_name()
+    <<" "<<profit_-old_profit_<< " "<< profit_<< endl;
     buffer_.erase(it);
     --occ_;
   }
   else{
     cerr << "Park error: auto "<< c.plate() <<" non presente"<< endl;
-    enters_wto_elaborate_.push_back(Car{"0"});
-    exits_wto_elaborate_.push_back(Car{"0"});
-    ++cars_wto_elaborate_;
   }
+  b_calculated_ = false;
 }
 
 string Park::park_status()
@@ -122,8 +139,14 @@ void Park::calc_profit()
       }
 
       mlock.lock();
+      old_profit_ = profit_;
       profit_ = profit_ + hours_due + days_due;
       mlock.unlock();
+
   }
+    mlock.lock();
+    b_calculated_ = true;
+    mlock.unlock();
+    calculated_.notify_one();
   }
 }

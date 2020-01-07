@@ -22,6 +22,7 @@ public:
 
     //Funzione per thread calcolo profitti
     void calc_profit();
+    void car_exits_output(const Car& c);
 
     int CAP() const {return CAP_;}
     int occ() const {return occ_;}
@@ -40,6 +41,9 @@ private:
 
 //VARIABILI PER IL CALCOLO DEI GUADAGNI
     float profit_;
+    float old_profit_;
+    std::condition_variable calculated_;
+    bool b_calculated_;
     const float hourly_rate_;
     const float dayly_rate_;
     std::list<Car> enters_wto_elaborate_;

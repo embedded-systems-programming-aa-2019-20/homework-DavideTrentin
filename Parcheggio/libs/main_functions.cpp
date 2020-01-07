@@ -167,6 +167,7 @@ void th_executer()// indice 8
             p1.car_exits((*it).second.car());
             rw_lock.unlock();
             car_went_out[0].notify_one();
+            p1.car_exits_output((*it).second.car());
             rw_lock.lock();
           }
         }
@@ -177,6 +178,7 @@ void th_executer()// indice 8
             p2.car_exits((*it).second.car());
             rw_lock.unlock();
             car_went_out[1].notify_one();
+            p2.car_exits_output((*it).second.car());
             rw_lock.lock();
           }
         }
